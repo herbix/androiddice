@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DiceView">
+        <attr name="diceColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="DiceStatusView">
+        <attr name="diceStatusColor" format="color" />
+        <attr name="topSmall" format="boolean" />
+    </declare-styleable>
+</resources>
