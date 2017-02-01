@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="DiceView">
         <attr name="diceColor" format="color" />
+        <attr name="bitmap" format="reference" />
     </declare-styleable>
     <declare-styleable name="DiceStatusView">
         <attr name="diceStatusColor" format="color" />
