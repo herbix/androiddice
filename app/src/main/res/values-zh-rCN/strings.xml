@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">骰子</string>
+    <string name="roll">"  掷！"</string>
+    <string name="dice_count">骰子个数</string>
+    <string name="dice_count_summ">%s个。</string>
+    <string name="dice1_type">一号骰子类型</string>
+    <string name="dice2_type">二号骰子类型</string>
+    <string name="dice3_type">三号骰子类型</string>
+    <string name="dice4_type">四号骰子类型</string>
+    <string name="dice_type_summ">%s。</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="basic_settings">基本设置</string>
+    <string name="dice_settings">骰子设置</string>
+</resources>

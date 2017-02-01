@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Basic Settings"
+        android:title="@string/basic_settings"
         android:key="basic_settings" >
         <ListPreference
             android:key="dice_count"
@@ -13,7 +13,7 @@
             android:defaultValue="2" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Dice Settings"
+        android:title="@string/dice_settings"
         android:key="dice_settings"
         >
         <ListPreference
