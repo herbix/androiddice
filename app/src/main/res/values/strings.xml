@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Dice</string>
     <string name="roll">Roll!</string>
+    <string name="options">Options</string>
+    <string name="dice_count">Dices Count</string>
+    <string name="dice_count_summ">Show %s dice(s).</string>
+    <string name="dice1_type">Dice 1 Type</string>
+    <string name="dice2_type">Dice 2 Type</string>
+    <string name="dice3_type">Dice 3 Type</string>
+    <string name="dice4_type">Dice 4 Type</string>
+    <string name="dice_type_summ">%s.</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

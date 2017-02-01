@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Basic Settings"
+        android:key="basic_settings" >
+        <ListPreference
+            android:key="dice_count"
+            android:title="@string/dice_count"
+            android:summary="@string/dice_count_summ"
+            android:dialogTitle="@string/dice_count"
+            android:entries="@array/dice_count_values"
+            android:entryValues="@array/dice_count_values"
+            android:defaultValue="2" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Dice Settings"
+        android:key="dice_settings"
+        >
+        <ListPreference
+            android:key="dice1_type"
+            android:title="@string/dice1_type"
+            android:summary="@string/dice_type_summ"
+            android:dialogTitle="@string/dice1_type"
+            android:entries="@array/dice_type_names"
+            android:entryValues="@array/dice_type_values"
+            android:defaultValue="1" />
+
+        <ListPreference
+            android:key="dice2_type"
+            android:title="@string/dice2_type"
+            android:summary="@string/dice_type_summ"
+            android:dialogTitle="@string/dice2_type"
+            android:entries="@array/dice_type_names"
+            android:entryValues="@array/dice_type_values"
+            android:defaultValue="2" />
+
+        <ListPreference
+            android:key="dice3_type"
+            android:title="@string/dice3_type"
+            android:summary="@string/dice_type_summ"
+            android:dialogTitle="@string/dice3_type"
+            android:entries="@array/dice_type_names"
+            android:entryValues="@array/dice_type_values"
+            android:defaultValue="3" />
+
+        <ListPreference
+            android:key="dice4_type"
+            android:title="@string/dice4_type"
+            android:summary="@string/dice_type_summ"
+            android:dialogTitle="@string/dice4_type"
+            android:entries="@array/dice_type_names"
+            android:entryValues="@array/dice_type_values"
+            android:defaultValue="4" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

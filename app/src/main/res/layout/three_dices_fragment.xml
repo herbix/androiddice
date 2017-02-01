@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="330dp"
+        android:layout_height="380dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <me.herbix.dice.DiceView
+            android:id="@+id/dice1"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:onClick="rollDice"
+            android:layout_centerHorizontal="true"
+            app:diceColor="#44c"
+            />
+
+        <me.herbix.dice.DiceView
+            android:id="@+id/dice2"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="rollDice"
+            app:diceColor="#c44"
+            />
+
+        <me.herbix.dice.DiceView
+            android:id="@+id/dice3"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="rollDice"
+            app:diceColor="#fc4"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roll"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="rollAll"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
