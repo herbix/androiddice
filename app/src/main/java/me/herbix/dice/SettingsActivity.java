@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 /**
@@ -16,14 +17,22 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String DICE2_TYPE = "dice2_type";
     public static final String DICE3_TYPE = "dice3_type";
     public static final String DICE4_TYPE = "dice4_type";
+    public static final String SHOW_SUM = "show_sum";
 
     public static final int MAX_DICE_COUNT = 4;
+
+    public static boolean isNumberDice(int diceType) {
+        return (diceType >= 0 && diceType < 20) || diceType == 100;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_settings);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
+                .replace(R.id.main_activity_inner, new SettingsFragment())
                 .commit();
 
         ActionBar actionBar = getSupportActionBar();

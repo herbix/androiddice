@@ -2,18 +2,18 @@ package me.herbix.dice;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,10 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     private int diceCount = 2;
     private int[] diceTypes = new int[4];
+    private boolean showSum = false;
 
     private boolean inSettings = false;
 
     private DicesFragment currentFragment = null;
+
+    private TextView sumView = null;
+    private AtomicInteger diceSumAtom = new AtomicInteger(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_main);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         loadSettings();
         loadUI();
     }
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         diceTypes[1] = Integer.valueOf(preferences.getString(SettingsActivity.DICE2_TYPE, "0"));
         diceTypes[2] = Integer.valueOf(preferences.getString(SettingsActivity.DICE3_TYPE, "0"));
         diceTypes[3] = Integer.valueOf(preferences.getString(SettingsActivity.DICE4_TYPE, "0"));
+        showSum = preferences.getBoolean(SettingsActivity.SHOW_SUM, true);
     }
 
     private void loadUI() {
@@ -60,7 +67,27 @@ public class MainActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.main_activity_inner, currentFragment)
                 .commit();
+        sumView = (TextView) findViewById(R.id.sum_text);
+        diceSumAtom.set(0);
+        for (int i=0; i<diceCount; i++) {
+            if (SettingsActivity.isNumberDice(diceTypes[i])) {
+                diceSumAtom.addAndGet(6);
+            }
+        }
+        setSumView();
     }
+
+    private void setSumView() {
+        if (sumView != null) {
+            if (showSum) {
+                sumView.setText(String.format(getString(R.string.sum), diceSumAtom.get()));
+                sumView.setVisibility(View.VISIBLE);
+            } else {
+                sumView.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.nav_menu, menu);
@@ -89,11 +116,18 @@ public class MainActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
+                final int id = getDiceIdByViewId(dice.getId());
                 for (int i=1; i<=10; i++) {
-                    dice.setNumber(rand.nextInt(6) + 1);
+                    int oldNumber = dice.getNumber();
+                    int newNumber = rand.nextInt(6) + 1;
+                    if (SettingsActivity.isNumberDice(diceTypes[id])) {
+                        diceSumAtom.addAndGet(newNumber - oldNumber);
+                    }
+                    dice.setNumber(newNumber);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            setSumView();
                             dice.invalidate();
                         }
                     });
@@ -107,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        int id = getDiceIdByViewId(dice.getId());
                         DiceView[] dices = currentFragment.getLittleDices(id);
                         int[] status = currentFragment.getDiceStatus(id);
                         DiceStatusView statusView = currentFragment.getStatusViews(id);

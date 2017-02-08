@@ -49,7 +49,7 @@ public class DicesFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putInt("DiceCount", diceCount);
-        args.putIntArray("DiceTypes", diceTypes);
+        args.putIntArray("DiceTypes", diceTypes.clone());
         f.setArguments(args);
 
         return f;
@@ -92,7 +92,7 @@ public class DicesFragment extends Fragment {
         setDiceColor(view, R.id.dice4, diceTypes[3]);
 
         for (int i=0; i<diceTypes.length; i++) {
-            if (diceTypes[i] >= 20) {
+            if (diceTypes[i] >= DICE_TYPE_TO_COLOR_LIGHT.length) {
                 diceTypes[i] = 0;
             }
         }

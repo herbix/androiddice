@@ -11,4 +11,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="basic_settings">Basic Settings</string>
     <string name="dice_settings">Dice Settings</string>
+    <string name="sum">Sum: %d</string>
+    <string name="show_sum">Show Sum</string>
 </resources>

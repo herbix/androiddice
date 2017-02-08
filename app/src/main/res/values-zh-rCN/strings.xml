@@ -12,4 +12,6 @@
     <string name="title_activity_settings">设置</string>
     <string name="basic_settings">基本设置</string>
     <string name="dice_settings">骰子设置</string>
+    <string name="show_sum">显示求和</string>
+    <string name="sum">和：%d</string>
 </resources>

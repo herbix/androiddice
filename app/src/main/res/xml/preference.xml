@@ -11,6 +11,10 @@
             android:entries="@array/dice_count_values"
             android:entryValues="@array/dice_count_values"
             android:defaultValue="2" />
+        <SwitchPreference
+            android:key="show_sum"
+            android:title="@string/show_sum"
+            android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/dice_settings"
@@ -23,7 +27,7 @@
             android:dialogTitle="@string/dice1_type"
             android:entries="@array/dice_type_names"
             android:entryValues="@array/dice_type_values"
-            android:defaultValue="1" />
+            android:defaultValue="0" />
 
         <ListPreference
             android:key="dice2_type"
@@ -32,7 +36,7 @@
             android:dialogTitle="@string/dice2_type"
             android:entries="@array/dice_type_names"
             android:entryValues="@array/dice_type_values"
-            android:defaultValue="2" />
+            android:defaultValue="0" />
 
         <ListPreference
             android:key="dice3_type"
@@ -41,7 +45,7 @@
             android:dialogTitle="@string/dice3_type"
             android:entries="@array/dice_type_names"
             android:entryValues="@array/dice_type_values"
-            android:defaultValue="3" />
+            android:defaultValue="0" />
 
         <ListPreference
             android:key="dice4_type"
@@ -50,7 +54,7 @@
             android:dialogTitle="@string/dice4_type"
             android:entries="@array/dice_type_names"
             android:entryValues="@array/dice_type_values"
-            android:defaultValue="4" />
+            android:defaultValue="0" />
 
     </PreferenceCategory>
 </PreferenceScreen>
