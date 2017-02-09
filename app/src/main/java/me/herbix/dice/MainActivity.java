@@ -182,8 +182,9 @@ public class MainActivity extends AppCompatActivity {
                 if (isRollAll) {
                     int count = rollAllCount.incrementAndGet();
                     if (count == diceCount) {
-                        if (statistics != null) {
-                            statistics.addSumResult(diceSumAtom.get());
+                        int sumValue = diceSumAtom.get();
+                        if (statistics != null && sumValue > 0) {
+                            statistics.addSumResult(sumValue);
                         }
                         isRollAll = false;
                     }

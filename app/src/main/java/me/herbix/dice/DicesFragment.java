@@ -68,8 +68,8 @@ public class DicesFragment extends Fragment {
         setDiceColor(view, R.id.dice3, diceTypes[2]);
         setDiceColor(view, R.id.dice4, diceTypes[3]);
 
-        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory1), 0, DiceTypeUtil.getDiceColorLight(diceTypes[0]), 0);
-        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory2), 1, DiceTypeUtil.getDiceColorLight(diceTypes[1]), 1);
+        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory1), 0, diceTypes[0], 0);
+        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory2), 1, diceTypes[1], 1);
 
         statusViews[0] = (DiceStatusView) view.findViewById(R.id.status1);
         statusViews[1] = (DiceStatusView) view.findViewById(R.id.status2);
@@ -90,7 +90,8 @@ public class DicesFragment extends Fragment {
         DiceTypeUtil.setDiceColor(getResources(), view, diceId, diceType);
     }
 
-    private void addLittleDiceFor(RelativeLayout his1, int diceId, int color, int direction) {
+    private void addLittleDiceFor(RelativeLayout his1, int diceId, int diceType, int direction) {
+        int color = DiceTypeUtil.getDiceColorLight(diceType);
         if (his1 != null) {
             for (int i = 0; i < 6; i++) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dip2px(38), dip2px(38));
