@@ -27,9 +27,9 @@ public class Statistics extends SQLiteOpenHelper {
     public static final String RECORD_TYPE_DICE = "Dice";
     public static final String RECORD_TYPE_DICE_FORMAT = "Dice%d";
 
-    private Map<Integer, Integer> diceResults = new HashMap<>();
-    private Map<Integer, Integer> sumResults = new HashMap<>();
-    private Map<Integer, Integer>[] dicesResults = new Map[SettingsActivity.MAX_DICE_COUNT];
+    private final Map<Integer, Integer> diceResults = new HashMap<>();
+    private final Map<Integer, Integer> sumResults = new HashMap<>();
+    private final Map<Integer, Integer>[] dicesResults = new Map[SettingsActivity.MAX_DICE_COUNT];
     private DiceProperty currentProperty = null;
 
     public Statistics(Context context) {
@@ -85,28 +85,34 @@ public class Statistics extends SQLiteOpenHelper {
     }
 
     public void addSumResult(int value) {
-        Integer v = sumResults.get(value);
-        if (v == null) {
-            sumResults.put(value, 1);
-        } else {
-            sumResults.put(value, v + 1);
+        synchronized (sumResults) {
+            Integer v = sumResults.get(value);
+            if (v == null) {
+                sumResults.put(value, 1);
+            } else {
+                sumResults.put(value, v + 1);
+            }
         }
     }
 
     public void addDiceResult(int id, int value) {
         Integer v;
-        v = dicesResults[id].get(value);
-        if (v == null) {
-            dicesResults[id].put(value, 1);
-        } else {
-            dicesResults[id].put(value, v + 1);
+        synchronized (dicesResults[id]) {
+            v = dicesResults[id].get(value);
+            if (v == null) {
+                dicesResults[id].put(value, 1);
+            } else {
+                dicesResults[id].put(value, v + 1);
+            }
         }
         if (currentProperty != null && DiceTypeUtil.isNumberDice(currentProperty.diceTypes[id])) {
-            v = diceResults.get(value);
-            if (v == null) {
-                diceResults.put(value, 1);
-            } else {
-                diceResults.put(value, v + 1);
+            synchronized (diceResults) {
+                v = diceResults.get(value);
+                if (v == null) {
+                    diceResults.put(value, 1);
+                } else {
+                    diceResults.put(value, v + 1);
+                }
             }
         }
     }
