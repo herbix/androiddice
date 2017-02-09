@@ -21,10 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final int MAX_DICE_COUNT = 4;
 
-    public static boolean isNumberDice(int diceType) {
-        return (diceType >= 0 && diceType < 20) || diceType == 100;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -26,6 +26,22 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StatisticsActivity"
+            android:label="@string/statistics">
+            <intent-filter>
+                <action android:name="me.herbix.dice.StatisticsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".StatisticsItemActivity"
+            android:label="@string/statistics">
+            <intent-filter>
+                <action android:name="me.herbix.dice.StatisticsItemActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

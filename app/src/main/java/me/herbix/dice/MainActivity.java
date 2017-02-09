@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView sumView = null;
     private AtomicInteger diceSumAtom = new AtomicInteger(0);
 
+    private Statistics statistics = null;
+
+    private volatile boolean isRollAll = false;
+    private AtomicInteger rollAllCount = new AtomicInteger(0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
+        statistics = new Statistics(this);
+
         loadSettings();
         loadUI();
     }
@@ -45,10 +52,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (statistics == null) {
+            statistics = new Statistics(this);
+            statistics.setDiceProperty(diceCount, diceTypes);
+        }
         if (inSettings) {
             loadSettings();
             loadUI();
             inSettings = false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (statistics != null) {
+            statistics.flush();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (statistics != null) {
+            statistics.close();
+            statistics = null;
         }
     }
 
@@ -60,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         diceTypes[2] = Integer.valueOf(preferences.getString(SettingsActivity.DICE3_TYPE, "0"));
         diceTypes[3] = Integer.valueOf(preferences.getString(SettingsActivity.DICE4_TYPE, "0"));
         showSum = preferences.getBoolean(SettingsActivity.SHOW_SUM, true);
+        statistics.setDiceProperty(diceCount, diceTypes);
     }
 
     private void loadUI() {
@@ -70,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         sumView = (TextView) findViewById(R.id.sum_text);
         diceSumAtom.set(0);
         for (int i=0; i<diceCount; i++) {
-            if (SettingsActivity.isNumberDice(diceTypes[i])) {
+            if (DiceTypeUtil.isNumberDice(diceTypes[i])) {
                 diceSumAtom.addAndGet(6);
             }
         }
@@ -101,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
                 inSettings = true;
                 startActivity(new Intent("me.herbix.dice.SettingsActivity"));
                 return true;
+            case R.id.action_statistics:
+                if (statistics != null) {
+                    statistics.close();
+                    statistics = null;
+                }
+                startActivity(new Intent("me.herbix.dice.StatisticsActivity"));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -117,10 +153,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final int id = getDiceIdByViewId(dice.getId());
+                int newNumber = 0;
                 for (int i=1; i<=10; i++) {
                     int oldNumber = dice.getNumber();
-                    int newNumber = rand.nextInt(6) + 1;
-                    if (SettingsActivity.isNumberDice(diceTypes[id])) {
+                    newNumber = rand.nextInt(6) + 1;
+                    if (DiceTypeUtil.isNumberDice(diceTypes[id])) {
                         diceSumAtom.addAndGet(newNumber - oldNumber);
                     }
                     dice.setNumber(newNumber);
@@ -138,6 +175,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                final int number = newNumber;
+                if (statistics != null) {
+                    statistics.addDiceResult(id, number);
+                }
+                if (isRollAll) {
+                    int count = rollAllCount.incrementAndGet();
+                    if (count == diceCount) {
+                        if (statistics != null) {
+                            statistics.addSumResult(diceSumAtom.get());
+                        }
+                        isRollAll = false;
+                    }
+                }
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -151,8 +202,6 @@ public class MainActivity extends AppCompatActivity {
                                 dices[i].setNumber(dices[i - 1].getNumber());
                                 dices[i].invalidate();
                             }
-
-                            int number = dice.getNumber();
 
                             dices[0].setVisibility(View.VISIBLE);
                             dices[0].setNumber(number);
@@ -184,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rollAll(View view) {
+        isRollAll = true;
+        rollAllCount.set(0);
         rollDice(findViewById(R.id.dice1));
         rollDice(findViewById(R.id.dice2));
         rollDice(findViewById(R.id.dice3));

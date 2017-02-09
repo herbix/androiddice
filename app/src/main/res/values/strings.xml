@@ -13,4 +13,19 @@
     <string name="dice_settings">Dice Settings</string>
     <string name="sum">Sum: %d</string>
     <string name="show_sum">Show Sum</string>
+    <string name="statistics">Statistics</string>
+    <string name="delete">Delete</string>
+    <string name="delete_all">Delete All</string>
+    <string name="sum_distribution">Sum Distribution</string>
+    <string name="dice_distribution">Dice Distribution</string>
+    <string name="dice1_distribution">Dice 1 Distribution</string>
+    <string name="dice2_distribution">Dice 2 Distribution</string>
+    <string name="dice3_distribution">Dice 3 Distribution</string>
+    <string name="dice4_distribution">Dice 4 Distribution</string>
+    <string name="delete_statistics">Delete Statistics</string>
+    <string name="delete_statistics_desc">Are you sure you want to delete the statistics?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_all_statistics_desc">Are you sure you want to delete all statistics?</string>
+    <string name="no_statistics">No statistics</string>
 </resources>

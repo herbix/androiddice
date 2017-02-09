@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat">
@@ -27,9 +28,12 @@
         <item name="colorControlHighlight">@android:color/white</item>
     </style>
 
-
     <style name="WhiteDrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
     </style>
 </resources>

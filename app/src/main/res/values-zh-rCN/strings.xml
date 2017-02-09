@@ -14,4 +14,19 @@
     <string name="dice_settings">骰子设置</string>
     <string name="show_sum">显示求和</string>
     <string name="sum">和：%d</string>
+    <string name="statistics">统计</string>
+    <string name="delete">删除</string>
+    <string name="delete_all">全部删除</string>
+    <string name="dice_distribution">点数分布</string>
+    <string name="sum_distribution">点数之和分布</string>
+    <string name="dice1_distribution">一号骰子分布</string>
+    <string name="dice2_distribution">二号骰子分布</string>
+    <string name="dice3_distribution">三号骰子分布</string>
+    <string name="dice4_distribution">四号骰子分布</string>
+    <string name="delete_statistics">删除统计</string>
+    <string name="delete_statistics_desc">你是否要删除这条统计数据？</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="delete_all_statistics_desc">你是否要删除所有统计数据？</string>
+    <string name="no_statistics">没有数据</string>
 </resources>

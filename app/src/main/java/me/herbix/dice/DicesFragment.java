@@ -2,8 +2,6 @@ package me.herbix.dice;
 
 
 import android.app.Fragment;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,34 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import static me.herbix.dice.DiceTypeUtil.DICE_TYPE_TO_COLOR_LIGHT;
+
 /**
  * Created by Chaofan on 2017/2/1.
  */
 
 public class DicesFragment extends Fragment {
-
-    public static int GREY = Color.rgb(180, 180, 180);
-    public static int RED = Color.rgb(204, 68, 68);
-    public static int BLUE = Color.rgb(68, 68, 204);
-    public static int YELLOW = Color.rgb(255, 204, 68);
-    public static int GREEN = Color.rgb(68, 204, 68);
-    public static int PURPLE = Color.rgb(180, 68, 180);
-    public static int CYAN = Color.rgb(68, 204, 255);
-
-    public static int GREY_LIGHT = Color.rgb(204, 204, 204);
-    public static int RED_LIGHT = Color.rgb(255, 180, 180);
-    public static int BLUE_LIGHT = Color.rgb(180, 180, 255);
-    public static int YELLOW_LIGHT = Color.rgb(255, 234, 180);
-    public static int GREEN_LIGHT = Color.rgb(180, 255, 180);
-    public static int PURPLE_LIGHT = Color.rgb(255, 180, 255);
-    public static int CYAN_LIGHT = Color.rgb(180, 234, 255);
-
-    public static int[] DICE_TYPE_TO_COLOR = new int[]{
-            GREY, RED, BLUE, YELLOW, GREEN, PURPLE, CYAN
-    };
-    public static int[] DICE_TYPE_TO_COLOR_LIGHT = new int[]{
-            GREY_LIGHT, RED_LIGHT, BLUE_LIGHT, YELLOW_LIGHT, GREEN_LIGHT, PURPLE_LIGHT, CYAN_LIGHT
-    };
 
     private DiceView[][] littleDices = new DiceView[SettingsActivity.MAX_DICE_COUNT][6];
     private int[][] diceStatus = new int[SettingsActivity.MAX_DICE_COUNT][7];
@@ -91,14 +68,8 @@ public class DicesFragment extends Fragment {
         setDiceColor(view, R.id.dice3, diceTypes[2]);
         setDiceColor(view, R.id.dice4, diceTypes[3]);
 
-        for (int i=0; i<diceTypes.length; i++) {
-            if (diceTypes[i] >= DICE_TYPE_TO_COLOR_LIGHT.length) {
-                diceTypes[i] = 0;
-            }
-        }
-
-        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory1), 0, DICE_TYPE_TO_COLOR_LIGHT[diceTypes[0]], 0);
-        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory2), 1, DICE_TYPE_TO_COLOR_LIGHT[diceTypes[1]], 1);
+        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory1), 0, DiceTypeUtil.getDiceColorLight(diceTypes[0]), 0);
+        addLittleDiceFor((RelativeLayout) view.findViewById(R.id.rollHistory2), 1, DiceTypeUtil.getDiceColorLight(diceTypes[1]), 1);
 
         statusViews[0] = (DiceStatusView) view.findViewById(R.id.status1);
         statusViews[1] = (DiceStatusView) view.findViewById(R.id.status2);
@@ -116,21 +87,7 @@ public class DicesFragment extends Fragment {
     }
 
     private void setDiceColor(View view, int diceId, int diceType) {
-        DiceView dice = (DiceView) view.findViewById(diceId);
-        if (dice != null) {
-            dice.setColor(DICE_TYPE_TO_COLOR[0]);
-            switch (diceType) {
-                case 20:
-                    dice.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.catan_kac));
-                    break;
-                case 100:
-                    dice.setColor(Color.WHITE);
-                    break;
-                default:
-                    dice.setColor(DICE_TYPE_TO_COLOR[diceType]);
-                    break;
-            }
-        }
+        DiceTypeUtil.setDiceColor(getResources(), view, diceId, diceType);
     }
 
     private void addLittleDiceFor(RelativeLayout his1, int diceId, int color, int direction) {
