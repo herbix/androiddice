@@ -221,6 +221,7 @@ public class StatisticsItemActivity extends AppCompatActivity {
                                 dataSource.put(convertedDiceValue, e.getValue() + v);
                             }
                         }
+                        xAxis.setTextSize(xAxis.getTextSize() * 2);
                         chart.setXAxisRenderer(new XAxisDiceRenderer(chart, dice, diceType));
                     }
                     break;
@@ -241,6 +242,11 @@ public class StatisticsItemActivity extends AppCompatActivity {
                 BarData data = new BarData(dataSet);
                 chart.setData(data);
             } else {
+                chart.setNoDataText(getString(R.string.no_statistics_data));
+                chart.setNoDataTextColor(Color.GRAY);
+                ViewGroup.LayoutParams params = chart.getLayoutParams();
+                params.height = params.height / 6;
+                chart.setLayoutParams(params);
                 chart.setData(null);
             }
 
@@ -285,9 +291,9 @@ public class StatisticsItemActivity extends AppCompatActivity {
             int number = DiceTypeUtil.getValueFromStatisticsLabel(diceType, value);
 
             c.save();
-            int lineHeight = (int) mAxisLabelPaint.getFontMetrics(null);
-            c.translate(x - lineHeight / 2, y - lineHeight / 8);
-            dice.drawDice(c, lineHeight, number);
+            float lineHeight = mAxisLabelPaint.getFontMetrics(null) * 0.7f;
+            c.translate(x - lineHeight / 2, y);
+            dice.drawDice(c, (int) lineHeight, number);
 
             c.restore();
         }

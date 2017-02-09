@@ -29,4 +29,5 @@
     <string name="yes">是</string>
     <string name="delete_all_statistics_desc">你是否要删除所有统计数据？</string>
     <string name="no_statistics">没有数据</string>
+    <string name="no_statistics_data">没有数据。</string>
 </resources>
