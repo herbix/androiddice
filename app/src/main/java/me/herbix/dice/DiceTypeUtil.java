@@ -41,16 +41,26 @@ public class DiceTypeUtil {
         if (dice != null) {
             dice.setColor(DICE_TYPE_TO_COLOR[0]);
             switch (diceType) {
-                case DICE_TYPE_CATAN_KAC:
-                    dice.setBitmap(BitmapFactory.decodeResource(resources, R.drawable.catan_kac));
-                    break;
                 case DICE_TYPE_STANDARD:
                     dice.setColor(Color.WHITE);
                     break;
                 default:
-                    dice.setColor(DICE_TYPE_TO_COLOR[diceType]);
+                    if (isNumberDice(diceType)) {
+                        dice.setColor(DICE_TYPE_TO_COLOR[diceType]);
+                    } else {
+                        dice.setBitmap(BitmapFactory.decodeResource(resources, getDiceResourceId(diceType)));
+                    }
                     break;
             }
+        }
+    }
+
+    public static int getDiceResourceId(int diceType) {
+        switch (diceType) {
+            case DICE_TYPE_CATAN_KAC:
+                return R.drawable.catan_kac;
+            default:
+                return 0;
         }
     }
 
@@ -58,10 +68,54 @@ public class DiceTypeUtil {
         if (diceType >= 0 && diceType < DICE_TYPE_TO_COLOR_LIGHT.length) {
             return DICE_TYPE_TO_COLOR_LIGHT[diceType];
         }
-        return GREEN_LIGHT;
+        return GREY_LIGHT;
     }
 
     public static boolean isNumberDice(int diceType) {
         return (diceType >= 0 && diceType < 20) || diceType == 100;
+    }
+
+    public static int getStatisticsLabel(int diceType, int value) {
+        if (isNumberDice(diceType)) {
+            return value;
+        }
+        switch (diceType) {
+            case DICE_TYPE_CATAN_KAC:
+                if (value % 2 == 0) {
+                    return 1;
+                } else {
+                    return (value / 2) + 2;
+                }
+            default:
+                return value;
+        }
+    }
+
+    public static int getValueFromStatisticsLabel(int diceType, int label) {
+        if (isNumberDice(diceType)) {
+            return label;
+        }
+        switch (diceType) {
+            case DICE_TYPE_CATAN_KAC:
+                if (label == 1) {
+                    return 6;
+                } else {
+                    return (label - 2) * 2 + 1;
+                }
+            default:
+                return label;
+        }
+    }
+
+    public static int getStatisticsLabelCount(int diceType) {
+        if (isNumberDice(diceType)) {
+            return 6;
+        }
+        switch (diceType) {
+            case DICE_TYPE_CATAN_KAC:
+                return 4;
+            default:
+                return 6;
+        }
     }
 }

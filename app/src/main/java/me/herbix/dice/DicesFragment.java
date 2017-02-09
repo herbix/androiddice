@@ -76,11 +76,11 @@ public class DicesFragment extends Fragment {
 
         if (statusViews[0] != null) {
             statusViews[0].setStatus(diceStatus[0]);
-            statusViews[0].setColor(DICE_TYPE_TO_COLOR_LIGHT[diceTypes[0]]);
+            statusViews[0].setColor(DiceTypeUtil.getDiceColorLight(diceTypes[0]));
         }
         if (statusViews[1] != null) {
             statusViews[1].setStatus(diceStatus[1]);
-            statusViews[1].setColor(DICE_TYPE_TO_COLOR_LIGHT[diceTypes[1]]);
+            statusViews[1].setColor(DiceTypeUtil.getDiceColorLight(diceTypes[1]));
         }
 
         return view;

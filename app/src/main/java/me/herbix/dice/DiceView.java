@@ -70,18 +70,22 @@ public class DiceView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         int size = Math.min(getWidth(), getHeight());
+        drawDice(canvas, size, number);
+    }
+
+    public void drawDice(Canvas canvas, int size, int number) {
         if (bitmap == null) {
             if (color == Color.WHITE) {
-                drawStandardDice(canvas, size);
+                drawStandardDice(canvas, size, number);
             } else {
-                drawNormalDice(canvas, size);
+                drawNormalDice(canvas, size, number);
             }
         } else {
-            drawBitmapDice(canvas, size);
+            drawBitmapDice(canvas, size, number);
         }
     }
 
-    private void drawNormalDice(Canvas canvas, int size) {
+    private void drawNormalDice(Canvas canvas, int size, int number) {
         bgPaint.setColor(color);
         drawRoundRect(canvas, 0, 0, size, size, size / 10f, bgPaint);
 
@@ -122,7 +126,7 @@ public class DiceView extends View {
         }
     }
 
-    private void drawStandardDice(Canvas canvas, int size) {
+    private void drawStandardDice(Canvas canvas, int size, int number) {
         bgPaint.setColor(Color.rgb(96, 96, 96));
         drawRoundRect(canvas, 0, 0, size, size, size / 10f, bgPaint);
         bgPaint.setColor(Color.WHITE);
@@ -183,7 +187,7 @@ public class DiceView extends View {
         }
     }
 
-    private void drawBitmapDice(Canvas canvas, int size) {
+    private void drawBitmapDice(Canvas canvas, int size, int number) {
         bgPaint.setColor(color);
         drawRoundRect(canvas, 0, 0, size, size, size / 10f, bgPaint);
         bgPaint.setColor(Color.WHITE);

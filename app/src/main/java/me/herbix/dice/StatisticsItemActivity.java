@@ -2,6 +2,7 @@ package me.herbix.dice;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,9 +29,13 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.renderer.XAxisRenderer;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -145,6 +150,8 @@ public class StatisticsItemActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (views[position] == null) {
                 views[position] = inflater.inflate(R.layout.statistics_item_list_item, null);
+            } else {
+                return views[position];
             }
 
             convertView = views[position];
@@ -171,9 +178,9 @@ public class StatisticsItemActivity extends AppCompatActivity {
             yAxis.setAxisMinimum(0);
             yAxis.setGranularity(1);
 
-            Map<Integer, Integer> dataSource = null;
-            int lowRange = 0;
-            int highRange = 0;
+            Map<Integer, Integer> dataSource;
+            int lowRange;
+            int highRange;
 
             switch (position) {
                 case 0:
@@ -193,12 +200,29 @@ public class StatisticsItemActivity extends AppCompatActivity {
                     break;
                 default:
                     int diceId = position - 2;
+                    int diceType = diceProperty.diceTypes[diceId];
+
                     dataSource = statistics.getDiceResults(diceId);
                     title.setText(getDiceDistributionString(diceId));
                     lowRange = 1;
-                    highRange = 6;
+                    highRange = DiceTypeUtil.getStatisticsLabelCount(diceType);
                     dice.setVisibility(View.VISIBLE);
-                    DiceTypeUtil.setDiceColor(getResources(), convertView, R.id.dice, diceProperty.diceTypes[diceId]);
+                    DiceTypeUtil.setDiceColor(getResources(), convertView, R.id.dice, diceType);
+
+                    if (!DiceTypeUtil.isNumberDice(diceType)) {
+                        Map<Integer, Integer> oldDataSource = dataSource;
+                        dataSource = new HashMap<>();
+                        for (Map.Entry<Integer, Integer> e : oldDataSource.entrySet()) {
+                            int convertedDiceValue = DiceTypeUtil.getStatisticsLabel(diceType, e.getKey());
+                            Integer v = dataSource.get(convertedDiceValue);
+                            if (v == null) {
+                                dataSource.put(convertedDiceValue, e.getValue());
+                            } else {
+                                dataSource.put(convertedDiceValue, e.getValue() + v);
+                            }
+                        }
+                        chart.setXAxisRenderer(new XAxisDiceRenderer(chart, dice, diceType));
+                    }
                     break;
             }
 
@@ -241,7 +265,31 @@ public class StatisticsItemActivity extends AppCompatActivity {
             case 3:
                 return getString(R.string.dice4_distribution);
             default:
-                return null;
+                return "";
+        }
+    }
+
+    static class XAxisDiceRenderer extends XAxisRenderer {
+        private DiceView dice;
+        private int diceType;
+
+        public XAxisDiceRenderer(BarChart chart, DiceView diceView, int diceType) {
+            super(chart.getViewPortHandler(), chart.getXAxis(), chart.getTransformer(YAxis.AxisDependency.LEFT));
+            this.dice = diceView;
+            this.diceType = diceType;
+        }
+
+        @Override
+        protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
+            int value = Integer.valueOf(formattedLabel);
+            int number = DiceTypeUtil.getValueFromStatisticsLabel(diceType, value);
+
+            c.save();
+            int lineHeight = (int) mAxisLabelPaint.getFontMetrics(null);
+            c.translate(x - lineHeight / 2, y - lineHeight / 8);
+            dice.drawDice(c, lineHeight, number);
+
+            c.restore();
         }
     }
 }
