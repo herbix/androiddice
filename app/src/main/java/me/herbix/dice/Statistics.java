@@ -56,9 +56,7 @@ public class Statistics extends SQLiteOpenHelper {
 
     public void setDiceProperty(int diceCount, int[] diceTypes) {
         flush();
-
-        diceResults.clear();
-        sumResults.clear();
+        clear();
 
         SQLiteDatabase db = getReadableDatabase();
         currentProperty = new DiceProperty(diceCount, diceTypes);
@@ -124,15 +122,19 @@ public class Statistics extends SQLiteOpenHelper {
     public Map<Integer, Integer> getDiceResults(int id) { return dicesResults[id]; }
 
     public void reset() {
+        clear();
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE, ROW_DICE_PROPERTY + " = '" + currentProperty + "'", null);
+        db.close();
+    }
+
+    private void clear() {
         diceResults.clear();
         sumResults.clear();
         for (int i=0; i<dicesResults.length; i++) {
             dicesResults[i].clear();
         }
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE, ROW_DICE_PROPERTY + " = '" + currentProperty + "'", null);
-        db.close();
     }
 
     public void flush() {

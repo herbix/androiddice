@@ -172,38 +172,44 @@ public class StatisticsItemActivity extends AppCompatActivity {
             yAxis.setGranularity(1);
 
             Map<Integer, Integer> dataSource = null;
+            int lowRange = 0;
+            int highRange = 0;
 
             switch (position) {
                 case 0:
                     dataSource = statistics.getSumResults();
                     title.setText(getString(R.string.sum_distribution));
                     int numberDiceCount = diceProperty.getNumberDiceCount();
-                    xAxis.setAxisMinimum(numberDiceCount - 0.5f);
-                    xAxis.setAxisMaximum(numberDiceCount * 6 + 0.5f);
+                    lowRange = numberDiceCount;
+                    highRange = 6 * numberDiceCount;
                     dice.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
                     dataSource = statistics.getDiceResults();
                     title.setText(getString(R.string.dice_distribution));
-                    xAxis.setAxisMinimum(0.5f);
-                    xAxis.setAxisMaximum(6.5f);
+                    lowRange = 1;
+                    highRange = 6;
                     dice.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     int diceId = position - 2;
                     dataSource = statistics.getDiceResults(diceId);
                     title.setText(getDiceDistributionString(diceId));
-                    xAxis.setAxisMinimum(0.5f);
-                    xAxis.setAxisMaximum(6.5f);
+                    lowRange = 1;
+                    highRange = 6;
                     dice.setVisibility(View.VISIBLE);
                     DiceTypeUtil.setDiceColor(getResources(), convertView, R.id.dice, diceProperty.diceTypes[diceId]);
                     break;
             }
 
+            xAxis.setAxisMinimum(lowRange - 0.5f);
+            xAxis.setAxisMaximum(highRange + 0.5f);
+
             if (dataSource != null && !dataSource.isEmpty()) {
                 List<BarEntry> entries = new ArrayList<>();
-                for (Map.Entry<Integer, Integer> e : dataSource.entrySet()) {
-                    entries.add(new BarEntry(e.getKey(), e.getValue()));
+                for (int i=lowRange; i<=highRange; i++) {
+                    Integer v = dataSource.get(i);
+                    entries.add(new BarEntry(i, v == null ? 0 : v));
                 }
                 BarDataSet dataSet = new BarDataSet(entries, title.getText().toString());
                 dataSet.setColor(Color.GRAY);
